@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Friendle</title>
+<style>
+
+/* ─────────────────────────────────────────────
+   TOKENS
+───────────────────────────────────────────── */
+:root {
+  --bg:        #fff0e0;
+  --card:      #fff9f4;
+  --ink:       #1c1408;
+  --ink-2:     #6b5e4e;
+  --line:      #ecddd0;
+
+  --coral:     #ff4d6b;
+  --coral-lt:  #fff0ec;
+  --mint:      #ff9a15;
+  --mint-lt:   #e6faf4;
+  --lemon:     #f7c948;
+  --lemon-lt:  #fef9e6;
+  --lilac:     #9f8df7;
+  --lilac-lt:  #f0edff;
+  --sky:       #3db8f5;
+  --sky-lt:    #e8f7ff;
+  --blush:     #f076b0;
+  --blush-lt:  #ffeef8;
+
+  --r:      18px;
+  --r-sm:   10px;
+  --r-pill: 100px;
+
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─────────────────────────────────────────────
+   RESET
+───────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 20px 96px;
+}
+
+/* ─────────────────────────────────────────────
+   WORDMARK
+───────────────────────────────────────────── */
+.wordmark {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 44px;
+}
+
+.wm-text {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+}
+
+/* Animated colour-cycling pill */
+.wm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 9px 3px 6px;
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--coral);
+  color: #fff;
+  animation: pill-cycle 6s ease-in-out infinite;
+}
+
+@keyframes pill-cycle {
+  0%, 100% { background: var(--coral); }
+  25%       { background: var(--mint); }
+  50%       { background: var(--lilac); }
+  75%       { background: var(--sky); }
+}
+
+.wm-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.8);
+}
+
+/* ─────────────────────────────────────────────
+   HEADER
+───────────────────────────────────────────── */
+.header {
+  text-align: center;
+  max-width: 500px;
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: clamp(1.9rem, 5vw, 2.75rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+/* Colourful inline highlight — swaps on each word */
+.h-coral { color: var(--coral); }
+.h-mint  { color: var(--mint); }
+.h-lilac { color: var(--lilac); }
+
+.header p {
+  margin-top: 12px;
+  font-size: 15px;
+  color: var(--ink-2);
+  line-height: 1.65;
+}
+
+/* ─────────────────────────────────────────────
+   CARD
+───────────────────────────────────────────── */
+.card {
+  background: var(--card);
+  border-radius: var(--r);
+  border: 1.5px solid var(--line);
+  padding: 32px 28px;
+  width: 100%;
+  max-width: 540px;
+}
+
+/* ─────────────────────────────────────────────
+   FORM
+───────────────────────────────────────────── */
+.form-section { margin-bottom: 26px; }
+
+.field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  margin-bottom: 9px;
+}
+
+/* ─────────────────────────────────────────────
+   SELECT
+───────────────────────────────────────────── */
+.select-wrap { position: relative; }
+
+select {
+  width: 100%;
+  appearance: none;
+  background: #fff;
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 11px 40px 11px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.18s var(--smooth), box-shadow 0.18s var(--smooth);
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--coral);
+  box-shadow: 0 0 0 3px var(--coral-lt);
+}
+
+.select-chevron {
+  position: absolute;
+  right: 13px; top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--ink-2);
+  font-size: 11px;
+  transition: transform 0.2s var(--smooth);
+}
+
+select:focus ~ .select-chevron { transform: translateY(-50%) rotate(180deg); }
+
+/* ─────────────────────────────────────────────
+   TRAIT CHIPS
+───────────────────────────────────────────── */
+.chip-grid { display: flex; flex-wrap: wrap; gap: 7px; }
+
+.chip {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--r-pill);
+  border: 1.5px solid var(--line);
+  background: #fff;
+  color: var(--ink-2);
+  cursor: pointer;
+  user-select: none;
+  /* spring bounce on interaction */
+  transition:
+    transform 0.22s var(--spring),
+    background 0.16s var(--smooth),
+    border-color 0.16s var(--smooth),
+    color 0.16s var(--smooth),
+    box-shadow 0.16s var(--smooth);
+  will-change: transform;
+}
+
+.chip:hover {
+  transform: translateY(-2px) scale(1.03);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.chip:active { transform: scale(0.95); }
+
+/* active: filled with its assigned colour */
+.chip.active {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 3px 10px var(--chip-shadow, rgba(0,0,0,0.12));
+}
+
+/* ─────────────────────────────────────────────
+   TEXTAREA
+───────────────────────────────────────────── */
+textarea {
+  width: 100%;
+  background: #fff;
+  color: var(--ink);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 11px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  resize: none;
+  height: 84px;
+  line-height: 1.55;
+  transition: border-color 0.18s var(--smooth), box-shadow 0.18s var(--smooth);
+}
+
+textarea::placeholder { color: #c8bfb6; }
+
+textarea:focus {
+  outline: none;
+  border-color: var(--mint);
+  box-shadow: 0 0 0 3px var(--mint-lt);
+}
+
+/* ─────────────────────────────────────────────
+   GENERATE BUTTON
+───────────────────────────────────────────── */
+.btn-primary {
+  width: 100%;
+  margin-top: 22px;
+  padding: 15px 20px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  /* warm gradient instead of flat black */
+  background: linear-gradient(135deg, var(--coral) 0%, #ff8c6a 100%);
+  color: #fff;
+  border: none;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.22s var(--spring), box-shadow 0.22s var(--smooth);
+  box-shadow: 0 4px 16px rgba(255,97,64,0.3);
+}
+
+/* Shimmer sweep on hover */
+.btn-primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.18) 50%, transparent 100%);
+  transform: translateX(-100%);
+  transition: transform 0.5s var(--smooth);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 8px 24px rgba(255,97,64,0.38);
+}
+
+.btn-primary:hover::after { transform: translateX(100%); }
+
+.btn-primary:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px rgba(255,97,64,0.2);
+}
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ─────────────────────────────────────────────
+   LOADING
+───────────────────────────────────────────── */
+.loading {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.loading.on { display: flex; }
+
+.loading span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  animation: lbounce 0.72s ease-in-out infinite;
+}
+
+.loading span:nth-child(1) { background: var(--coral);  animation-delay: 0s; }
+.loading span:nth-child(2) { background: var(--lemon);  animation-delay: 0.12s; }
+.loading span:nth-child(3) { background: var(--mint);   animation-delay: 0.24s; }
+.loading span:nth-child(4) { background: var(--lilac);  animation-delay: 0.36s; }
+
+@keyframes lbounce {
+  0%, 70%, 100% { transform: translateY(0) scale(1); }
+  35%           { transform: translateY(-9px) scale(1.15); }
+}
+
+.loading-quip {
+  display: none;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-2);
+  margin-top: 7px;
+  font-style: italic;
+}
+
+.loading-quip.on { display: block; }
+
+/* ─────────────────────────────────────────────
+   RESULT WRAPPER
+───────────────────────────────────────────── */
+.result-wrap {
+  width: 100%;
+  max-width: 540px;
+  margin-top: 20px;
+  opacity: 0;
+  transform: translateY(20px) scale(0.98);
+  transition: opacity 0.4s var(--smooth), transform 0.4s var(--spring);
+  pointer-events: none;
+}
+
+.result-wrap.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: all;
+}
+
+/* ─────────────────────────────────────────────
+   RESULT CARD
+───────────────────────────────────────────── */
+.result-card {
+  border-radius: var(--r);
+  border: 1.5px solid var(--line);
+  overflow: hidden;
+  /* card bg tinted by result accent — set by JS */
+  background: var(--r-card-bg, #fff);
+}
+
+/* ── Result header ── */
+.result-head {
+  padding: 24px 26px 20px;
+  /* slightly more saturated tint */
+  background: var(--r-head-bg, #fff9f4);
+  border-bottom: 1.5px solid var(--line);
+}
+
+.result-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--r-accent, var(--coral));
+  margin-bottom: 8px;
+}
+
+.result-name {
+  font-size: clamp(1.35rem, 3.5vw, 1.85rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.result-tag {
+  display: inline-block;
+  margin-top: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  background: var(--r-tag-bg, var(--coral-lt));
+  color: var(--r-accent, var(--coral));
+  border: 1.5px solid var(--r-tag-border, #ffd4c9);
+}
+
+/* ── Result sections ── */
+.result-body { padding: 0 26px; }
+
+.rsec {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+  /* stagger-in animation triggered per section */
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.32s var(--smooth), transform 0.32s var(--spring);
+}
+
+.rsec.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rsec:last-child { border-bottom: none; }
+
+.sec-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--r-accent, var(--coral));
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sec-icon { font-size: 13px; letter-spacing: 0; }
+
+.sec-text {
+  font-size: 14px;
+  line-height: 1.68;
+  color: var(--ink);
+}
+
+/* Trait pills */
+.trait-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+
+.trait-pill {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 13px;
+  border-radius: var(--r-pill);
+  background: var(--r-pill-bg, var(--coral-lt));
+  color: var(--r-accent, var(--coral));
+  border: 1.5px solid var(--r-pill-border, #ffd4c9);
+  /* pop-in on appear */
+  animation: pill-pop 0.28s var(--spring) both;
+}
+
+@keyframes pill-pop {
+  from { transform: scale(0.7); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Env list */
+.env-list { display: flex; flex-direction: column; gap: 8px; }
+
+.env-item {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.env-pip {
+  flex-shrink: 0;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--r-accent, var(--coral));
+  position: relative;
+  top: -1px;
+  margin-top: 5px;
+}
+
+/* Why box — tinted surface */
+.why-box {
+  background: var(--r-why-bg, var(--lemon-lt));
+  border-radius: var(--r-sm);
+  padding: 14px 16px;
+  margin-top: 4px;
+}
+
+.why-box .sec-text { font-weight: 500; }
+
+/* ── Result footer ── */
+.result-footer {
+  padding: 16px 26px 22px;
+  display: flex;
+  justify-content: center;
+}
+
+.btn-regen {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  background: transparent;
+  color: var(--ink-2);
+  border: 1.5px solid var(--line);
+  border-radius: var(--r-pill);
+  padding: 9px 18px;
+  cursor: pointer;
+  transition:
+    transform 0.22s var(--spring),
+    border-color 0.16s var(--smooth),
+    color 0.16s var(--smooth),
+    background 0.16s var(--smooth);
+}
+
+.btn-regen:hover {
+  transform: translateY(-2px);
+  border-color: var(--r-accent, var(--coral));
+  color: var(--r-accent, var(--coral));
+  background: var(--r-tag-bg, var(--coral-lt));
+}
+
+.btn-regen:active { transform: scale(0.96); }
+
+/* Spin the icon on hover */
+.regen-icon {
+  display: inline-block;
+  transition: transform 0.4s var(--spring);
+}
+
+.btn-regen:hover .regen-icon { transform: rotate(200deg); }
+
+/* ─────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────── */
+.site-footer {
+  margin-top: 48px;
+  font-size: 12px;
+  color: #c8bfb6;
+}
+
+/* ─────────────────────────────────────────────
+   RESPONSIVE
+───────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .card, .result-card { border-radius: 12px; }
+  .card { padding: 22px 16px; }
+  .result-head, .result-body, .result-footer { padding-left: 16px; padding-right: 16px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Wordmark -->
+<div class="wordmark">
+  <span class="wm-text">friendle</span>
+  <span class="wm-pill"><span class="wm-dot"></span>✨</span>
+</div>
+
+<!-- Header -->
+<header class="header">
+  <h1>Let's find your <span class="h-coral">tiny friend</span><br>with <span class="h-mint">big expectations</span> !</h1>
+  <p>Tell us about yourself, pick what you're doing, and we'll describe the personality archetype you'd actually click with. No real people. Just good archetypes.</p>
+</header>
+
+<!-- Input card -->
+<div class="card">
+
+  <div class="form-section">
+    <label class="field-label" for="activity-select">What are you doing?</label>
+    <div class="select-wrap">
+      <select id="activity-select">
+        <option value="" disabled selected>Choose an activity…</option>
+        <option value="studying">📚  Studying</option>
+        <option value="traveling">✈️  Traveling</option>
+        <option value="deep_talks">🌙  Deep Talks</option>
+        <option value="gaming">🎮  Gaming</option>
+        <option value="gym">💪  Gym</option>
+        <option value="creative_projects">🎨  Creative Projects</option>
+        <option value="hiking">🥾  Hiking</option>
+        <option value="social_events">🎉  Social Events</option>
+      </select>
+      <span class="select-chevron">▾</span>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <label class="field-label">Your vibe <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;color:#c8bfb6">— pick any that fit</span></label>
+    <div class="chip-grid" id="trait-chips"></div>
+  </div>
+
+  <div class="form-section">
+    <label class="field-label" for="behavior-text">How do you actually act during this? <span style="font-weight:400;text-transform:none;letter-spacing:0;font-size:12px;color:#c8bfb6">optional</span></label>
+    <textarea id="behavior-text" placeholder="e.g. I go quiet and hyper-focus, rarely take breaks…"></textarea>
+  </div>
+
+  <button class="btn-primary" id="generate-btn">Summon my friendle</button>
+
+  <div class="loading" id="loading">
+    <span></span><span></span><span></span><span></span>
+  </div>
+  <div class="loading-quip" id="loading-quip">figuring out your vibe…</div>
+
+</div>
+
+<!-- Result -->
+<div class="result-wrap" id="result-wrap">
+  <div class="result-card" id="result-card">
+    <div class="result-head" id="result-head">
+      <div class="result-eyebrow" id="r-eyebrow">Compatible Persona Profile</div>
+      <div class="result-name" id="r-name"></div>
+      <div class="result-tag" id="r-tag"></div>
+    </div>
+
+    <div class="result-body">
+      <div class="rsec" id="sec-traits">
+        <div class="sec-label"><span class="sec-icon">🏷</span> Key Traits</div>
+        <div class="trait-row" id="r-traits"></div>
+      </div>
+
+      <div class="rsec" id="sec-strengths">
+        <div class="sec-label"><span class="sec-icon">⚡</span> Complementary Strengths</div>
+        <div class="sec-text" id="r-strengths"></div>
+      </div>
+
+      <div class="rsec" id="sec-friction">
+        <div class="sec-label"><span class="sec-icon">🌶</span> Potential Friction</div>
+        <div class="sec-text" id="r-friction"></div>
+      </div>
+
+      <div class="rsec" id="sec-envs">
+        <div class="sec-label"><span class="sec-icon">📍</span> Best Environments to Meet Them</div>
+        <div class="env-list" id="r-envs"></div>
+      </div>
+
+      <div class="rsec" id="sec-why">
+        <div class="sec-label"><span class="sec-icon">🧠</span> Why This Works</div>
+        <div class="why-box" id="r-why-box">
+          <div class="sec-text" id="r-why"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-footer">
+      <button class="btn-regen" id="regen-btn">
+        <span class="regen-icon">↻</span> Try another match
+      </button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">no real people · no external apis · just vibes ✌️</footer>
+
+<script>
+/* ================================================================
+   DATA
+   ================================================================ */
+
+const ALL_TRAITS = [
+  "Introverted","Extroverted","Analytical","Creative",
+  "Empathetic","Logical","Spontaneous","Organized",
+  "Competitive","Laid-back","Talkative","Reserved",
+  "Curious","Practical","Humorous","Deep thinker",
+  "Energetic","Calm","Ambitious","Easygoing"
+];
+
+/* Each chip gets its own saturated colour */
+const CHIP_COLORS = [
+  { bg:"#fff0ec", text:"#d93a18", border:"#ffcbbf", shadow:"rgba(255,97,64,0.18)" },
+  { bg:"#e6faf4", text:"#0e8a65", border:"#9de8d3", shadow:"rgba(34,201,154,0.18)" },
+  { bg:"#fef9e6", text:"#9a7200", border:"#ffe47a", shadow:"rgba(247,201,72,0.18)" },
+  { bg:"#f0edff", text:"#5c3ed4", border:"#c9bffe", shadow:"rgba(159,141,247,0.18)" },
+  { bg:"#e8f7ff", text:"#0d80bf", border:"#a0dbf7", shadow:"rgba(61,184,245,0.18)" },
+  { bg:"#ffeef8", text:"#b0348a", border:"#f7b3e0", shadow:"rgba(240,118,176,0.18)" },
+];
+
+/* Result accent themes — one per archetype slot */
+const RESULT_THEMES = [
+  {
+    accent: "#ff6140", cardBg: "#fffaf8", headBg: "#fff4f0",
+    tagBg: "#fff0ec", tagBorder: "#ffcbbf",
+    pillBg: "#fff0ec", pillBorder: "#ffcbbf",
+    whyBg: "#fff9f0",
+  },
+  {
+    accent: "#22c99a", cardBg: "#f8fffc", headBg: "#edfaf5",
+    tagBg: "#e6faf4", tagBorder: "#9de8d3",
+    pillBg: "#e6faf4", pillBorder: "#9de8d3",
+    whyBg: "#edfaf5",
+  },
+  {
+    accent: "#9f8df7", cardBg: "#faf9ff", headBg: "#f2f0ff",
+    tagBg: "#f0edff", tagBorder: "#c9bffe",
+    pillBg: "#f0edff", pillBorder: "#c9bffe",
+    whyBg: "#f5f3ff",
+  },
+];
+
+const LOADING_QUIPS = [
+  "figuring out your vibe…",
+  "consulting the archetype oracle…",
+  "running 3,000 personality simulations…",
+  "cross-referencing your chaos…",
+  "detecting complementary energy…",
+  "asking the vibe committee…",
+];
+
+/* ---------------------------------------------------------------- */
+const ACTIVITY_DATA = {
+  studying: {
+    idealComplement: ["Organized","Analytical","Calm","Practical","Deep thinker"],
+    archetypes: ["The Focused Collaborator","The Quiet Strategist","The Structured Guide"],
+    dynamic: "Mutual accountability, zero drama",
+    environments: [
+      "University libraries and quiet study halls",
+      "Coffee shops with suspiciously good wifi",
+      "Online study communities and Discord servers",
+      "Academic workshops and tutoring circles"
+    ],
+    baseStrengths: "Brings structure to your sessions without becoming a human productivity app. Knows when to talk and when silence is doing the heavy lifting. Keeps you accountable without being insufferable about it.",
+    baseFriction: "May feel rigid when creative problem-solving is needed. Could quietly judge your open-tab count."
+  },
+  traveling: {
+    idealComplement: ["Spontaneous","Curious","Easygoing","Humorous","Energetic"],
+    archetypes: ["The Adventurous Wanderer","The Cultural Explorer","The Spontaneous Navigator"],
+    dynamic: "Shared wonder, zero rigid itineraries",
+    environments: [
+      "Hostel common rooms and group day tours",
+      "Language exchange cafés in cities you can't pronounce",
+      "Adventure sport classes where everyone is equally terrified",
+      "Random trains going somewhere promising"
+    ],
+    baseStrengths: "Opens you to detours you'd never book on purpose — those are always the best part. Keeps the mood light when the flight is delayed by four hours. Again.",
+    baseFriction: "Their comfort with uncertainty may clash if you need a plan before leaving the house. One packs a week early; the other throws things in a bag at 2am."
+  },
+  deep_talks: {
+    idealComplement: ["Empathetic","Deep thinker","Curious","Reserved","Calm"],
+    archetypes: ["The Thoughtful Listener","The Philosophical Empath","The Reflective Confidant"],
+    dynamic: "Intellectual intimacy with real reciprocity",
+    environments: [
+      "Philosophy meetups and moody book clubs",
+      "Evening walks that stretch well past sunset",
+      "Small dinner parties where phones disappear",
+      "Personal growth workshops people don't admit attending"
+    ],
+    baseStrengths: "Holds space without offering unsolicited solutions or checking their phone. Asks the questions that make you sit with silence for a beat. Knows the difference between listening and waiting to speak.",
+    baseFriction: "May struggle with lighter banter — every topic becomes a seminar. Could over-process a situation that just needed a laugh."
+  },
+  gaming: {
+    idealComplement: ["Competitive","Humorous","Easygoing","Energetic","Spontaneous"],
+    archetypes: ["The Tactical Teammate","The Hype Co-pilot","The Balanced Competitor"],
+    dynamic: "High-stakes synergy, low-stakes ego",
+    environments: [
+      "LAN events and gaming conventions",
+      "Discord servers and online gaming communities",
+      "Local game shops with organized play nights",
+      "Competitive watch parties and Twitch streams"
+    ],
+    baseStrengths: "Matches your intensity without tilting when things go sideways. Turns a loss into a debrief, not a meltdown. Communicates cleanly under pressure.",
+    baseFriction: "Competing motivations — casual vs. ranked — create friction fast. Different genre preferences may mean scheduling tetris."
+  },
+  gym: {
+    idealComplement: ["Ambitious","Energetic","Disciplined","Practical","Organized"],
+    archetypes: ["The Disciplined Motivator","The Steady Pacer","The Performance Partner"],
+    dynamic: "Grounded discipline, mutual push",
+    environments: [
+      "Group fitness classes where everyone suffers together",
+      "Running clubs — the 6am ones that are actually fun",
+      "Fitness apps with social features nobody uses enough",
+      "Local sports leagues you told yourself you'd join"
+    ],
+    baseStrengths: "Shows up consistently and makes your skipping feel slightly more embarrassing — in a good way. Has a plan but doesn't spiral when life breaks it.",
+    baseFriction: "Different training styles can make syncing hard. Fitness levels will diverge eventually; that's just how time works."
+  },
+  creative_projects: {
+    idealComplement: ["Creative","Spontaneous","Curious","Empathetic","Talkative"],
+    archetypes: ["The Generative Spark","The Collaborative Visionary","The Improvisational Maker"],
+    dynamic: "Creative osmosis, shared experimentation",
+    environments: [
+      "Art studios, maker spaces, and co-working hubs",
+      "Creative writing circles and improv classes",
+      "Open mic nights, music jams, design meetups",
+      "Online communities where people actually share WIP work"
+    ],
+    baseStrengths: "Introduces ideas from wildly different domains and doesn't apologize for it. Their process challenges yours without turning competitive. Brainstorming feels generative, not performative.",
+    baseFriction: "Execution styles may differ wildly — one over-ideates, one over-polishes. Deadlines become a philosophical discussion."
+  },
+  hiking: {
+    idealComplement: ["Calm","Curious","Laid-back","Easygoing","Practical"],
+    archetypes: ["The Grounded Nature Reader","The Steady Trail Companion","The Mindful Wayfarer"],
+    dynamic: "Comfortable silence with occasional depth",
+    environments: [
+      "Local trail clubs and national park regulars",
+      "Outdoor gear stores with community bulletin boards",
+      "Nature photography groups who love the walk more than the shot",
+      "Meetup hiking groups for all fitness levels"
+    ],
+    baseStrengths: "Keeps pace without silently judging yours. Can sit in total silence or carry a conversation three miles without you noticing. Knows when the trail asks for attention, not chatter.",
+    baseFriction: "Pacing differences can create awkwardness early. Strong opinions on gear, snacks, or risk tolerance surface faster than expected."
+  },
+  social_events: {
+    idealComplement: ["Extroverted","Humorous","Talkative","Empathetic","Energetic"],
+    archetypes: ["The Social Anchor","The Room Connector","The Magnetic Facilitator"],
+    dynamic: "Complementary social energy, genuine warmth",
+    environments: [
+      "Gallery openings, community events, those networking nights you dread",
+      "House party circuits where everyone knows someone",
+      "Volunteer groups that are secretly very social",
+      "Trivia nights, improv shows, sports bars"
+    ],
+    baseStrengths: "Pulls you into conversations you'd have avoided solo. Makes introductions feel natural rather than transactional. Keeps the energy going without draining the room.",
+    baseFriction: "Their pace can deplete you if your social stamina has limits. Differing comfort levels with strangers create invisible gaps."
+  }
+};
+
+const TRAIT_ADJUSTMENTS = {
+  Introverted:     { complement:"naturally extroverted or at least socially regulated", note:"draws you outward without blowing your social battery" },
+  Extroverted:     { complement:"selectively introverted", note:"grounds your energy and adds depth before you run out of breath" },
+  Analytical:      { complement:"intuitively creative", note:"balances your logic with instinct and the occasional 'why not?'" },
+  Creative:        { complement:"structurally minded", note:"gives your wildest ideas somewhere to land" },
+  Empathetic:      { complement:"direct and action-oriented", note:"translates feelings into momentum without dismissing them" },
+  Logical:         { complement:"emotionally attuned", note:"adds the human layer your systems sometimes forget" },
+  Spontaneous:     { complement:"quietly organized", note:"provides just enough scaffolding to stop everything from catching fire" },
+  Organized:       { complement:"flexibly spontaneous", note:"gently reminds you that not everything needs a spreadsheet" },
+  Competitive:     { complement:"genuinely collaborative", note:"channels your drive without turning every hangout into a tournament" },
+  "Laid-back":     { complement:"gently motivated", note:"moves things forward without making you feel behind" },
+  Talkative:       { complement:"a thoughtful listener", note:"gives your words space to land instead of competing for airtime" },
+  Reserved:        { complement:"warmly expressive", note:"makes silence comfortable while occasionally reeling you in" },
+  Curious:         { complement:"encyclopedically knowledgeable", note:"feeds your curiosity with depth, not just more questions" },
+  Practical:       { complement:"visionary and abstract", note:"stretches your thinking past the immediately useful" },
+  Humorous:        { complement:"genuinely appreciative without performing", note:"laughs with you authentically instead of holding up a scorecard" },
+  "Deep thinker":  { complement:"present and grounded", note:"pulls you back from the abstract when your feet need to touch the floor" },
+  Energetic:       { complement:"sustainably calm", note:"doesn't dim your energy — just gives it somewhere to rest" },
+  Calm:            { complement:"quietly energizing", note:"nudges you toward motion without disturbing your equilibrium" },
+  Ambitious:       { complement:"contentedly focused", note:"models depth over breadth and quietly prevents the burnout spiral" },
+  Easygoing:       { complement:"purpose-driven", note:"adds intentionality to your relaxed approach without the tension" }
+};
+
+/* ================================================================
+   BUILD CHIPS
+   ================================================================ */
+const chipGrid = document.getElementById("trait-chips");
+const selectedTraits = new Set();
+
+ALL_TRAITS.forEach((trait, i) => {
+  const c = CHIP_COLORS[i % CHIP_COLORS.length];
+  const btn = document.createElement("button");
+  btn.className = "chip";
+  btn.textContent = trait;
+  btn.type = "button";
+
+  btn.addEventListener("click", () => {
+    const isActive = btn.classList.toggle("active");
+    if (isActive) {
+      btn.style.background    = c.bg;
+      btn.style.color         = c.text;
+      btn.style.borderColor   = c.border;
+      btn.style.setProperty("--chip-shadow", c.shadow);
+      selectedTraits.add(trait);
+    } else {
+      btn.style.background  = "";
+      btn.style.color       = "";
+      btn.style.borderColor = "";
+      selectedTraits.delete(trait);
+    }
+  });
+
+  chipGrid.appendChild(btn);
+});
+
+/* ================================================================
+   GENERATION ENGINE
+   ================================================================ */
+let genCount = 0;
+
+/* Helper: stagger-reveal result sections */
+function revealSections() {
+  const secs = document.querySelectorAll(".rsec");
+  secs.forEach((s, i) => {
+    s.classList.remove("visible");
+    setTimeout(() => s.classList.add("visible"), 80 + i * 70);
+  });
+}
+
+/* Apply a result theme to the card */
+function applyTheme(t) {
+  const card   = document.getElementById("result-card");
+  const head   = document.getElementById("result-head");
+  const eyebrow = document.getElementById("r-eyebrow");
+  const tag    = document.getElementById("r-tag");
+  const whyBox = document.getElementById("r-why-box");
+  const regenBtn = document.getElementById("regen-btn");
+
+  card.style.background        = t.cardBg;
+  head.style.background        = t.headBg;
+  eyebrow.style.color          = t.accent;
+  tag.style.background         = t.tagBg;
+  tag.style.borderColor        = t.tagBorder;
+  tag.style.color              = t.accent;
+  whyBox.style.background      = t.whyBg;
+
+  /* Update CSS vars so regen button uses same accent */
+  card.style.setProperty("--r-accent", t.accent);
+  card.style.setProperty("--r-tag-bg", t.tagBg);
+  card.style.setProperty("--r-pill-bg", t.pillBg);
+  card.style.setProperty("--r-pill-border", t.pillBorder);
+
+  /* Section labels */
+  document.querySelectorAll(".sec-label").forEach(el => el.style.color = t.accent);
+  /* Env pips */
+  document.querySelectorAll(".env-pip").forEach(el => el.style.background = t.accent);
+}
+
+function generate() {
+  const activity    = document.getElementById("activity-select").value;
+  const behaviorTxt = document.getElementById("behavior-text").value.trim();
+  const traits      = Array.from(selectedTraits);
+
+  if (!activity) {
+    alert("Pick an activity first — the oracle needs something to work with.");
+    return false;
+  }
+
+  const data        = ACTIVITY_DATA[activity];
+  const theme       = RESULT_THEMES[genCount % RESULT_THEMES.length];
+  const personaName = data.archetypes[genCount % data.archetypes.length];
+  genCount++;
+
+  /* Build persona traits */
+  const personaTraits = [...data.idealComplement];
+  if (traits.length > 0) {
+    const adj = TRAIT_ADJUSTMENTS[traits[0]];
+    if (adj && !personaTraits.includes(adj.complement)) personaTraits.push(adj.complement);
+  }
+
+  /* Strengths */
+  let strengths = data.baseStrengths;
+  if (traits.length > 0) {
+    const adjs = traits.slice(0,2).map(t => TRAIT_ADJUSTMENTS[t]).filter(Boolean);
+    if (adjs.length > 0)
+      strengths += ` Because you lean ${traits.slice(0,2).join(" and ").toLowerCase()}, this companion ${adjs[0].note}.`;
+  }
+
+  /* Why */
+  let why = `The dynamic here is built on counterbalance, not similarity. Lasting friendships form between people who fill each other's gaps without threatening each other's identity. `;
+  if (behaviorTxt.length > 20) {
+    why += `Given that you described yourself as someone who ${behaviorTxt.slice(0,85)}${behaviorTxt.length>85?'…':''}, this archetype provides exactly the push-and-catch dynamic that turns solo tendencies into shared momentum.`;
+  } else {
+    why += `For ${activity.replace(/_/g,' ')}, this persona thrives in the same conditions you do — which makes the compatibility feel natural, not constructed.`;
+  }
+
+  /* Apply theme */
+  applyTheme(theme);
+
+  /* Populate */
+  document.getElementById("r-name").textContent = personaName;
+  document.getElementById("r-tag").textContent  = data.dynamic;
+
+  /* Trait pills */
+  const traitRow = document.getElementById("r-traits");
+  traitRow.innerHTML = "";
+  personaTraits.slice(0,5).forEach((t, i) => {
+    const pill = document.createElement("span");
+    pill.className = "trait-pill";
+    pill.textContent = t;
+    pill.style.background   = theme.pillBg;
+    pill.style.borderColor  = theme.pillBorder;
+    pill.style.color        = theme.accent;
+    pill.style.animationDelay = `${i * 50}ms`;
+    traitRow.appendChild(pill);
+  });
+
+  document.getElementById("r-strengths").textContent = strengths;
+  document.getElementById("r-friction").textContent  = data.baseFriction;
+
+  /* Environments */
+  const envList = document.getElementById("r-envs");
+  envList.innerHTML = "";
+  data.environments.forEach(e => {
+    const row = document.createElement("div");
+    row.className = "env-item";
+    const pip = document.createElement("div");
+    pip.className = "env-pip";
+    pip.style.background = theme.accent;
+    const txt = document.createElement("span");
+    txt.textContent = e;
+    row.appendChild(pip);
+    row.appendChild(txt);
+    envList.appendChild(row);
+  });
+
+  document.getElementById("r-why").textContent = why;
+
+  return true;
+}
+
+/* ================================================================
+   EVENTS
+   ================================================================ */
+document.getElementById("generate-btn").addEventListener("click", () => {
+  const btn   = document.getElementById("generate-btn");
+  const load  = document.getElementById("loading");
+  const quip  = document.getElementById("loading-quip");
+  const wrap  = document.getElementById("result-wrap");
+
+  quip.textContent = LOADING_QUIPS[Math.floor(Math.random() * LOADING_QUIPS.length)];
+  btn.disabled = true;
+  btn.textContent = "Finding your match…";
+  load.classList.add("on");
+  quip.classList.add("on");
+  wrap.classList.remove("show");
+
+  setTimeout(() => {
+    const ok = generate();
+    btn.disabled = false;
+    btn.textContent = "Find my ideal companion";
+    load.classList.remove("on");
+    quip.classList.remove("on");
+
+    if (ok) {
+      wrap.classList.add("show");
+      /* stagger sections after card appears */
+      setTimeout(revealSections, 150);
+      setTimeout(() => wrap.scrollIntoView({ behavior:"smooth", block:"start" }), 80);
+    }
+  }, 1000);
+});
+
+document.getElementById("regen-btn").addEventListener("click", () => {
+  const wrap = document.getElementById("result-wrap");
+  /* reset section visibility */
+  document.querySelectorAll(".rsec").forEach(s => s.classList.remove("visible"));
+  wrap.classList.remove("show");
+
+  setTimeout(() => {
+    if (generate()) {
+      wrap.classList.add("show");
+      setTimeout(revealSections, 150);
+    }
+  }, 280);
+});
+</script>
+</body>
+</html>
